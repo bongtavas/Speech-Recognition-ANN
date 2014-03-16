@@ -1,4 +1,5 @@
 import numpy as np 
+import time
 
 class BackPropagationNetwork:
 
@@ -17,7 +18,7 @@ class BackPropagationNetwork:
 
 		for (l1,l2) in zip(layerSize[:-1],layerSize[1:]):
 			self.weights.append(np.random.normal(scale=0.1,size=(l2,l1+1)))
-			self._previousWeightDelta.append(np.zeros((l2,l1-1)))
+			self._previousWeightDelta.append(np.zeros((l2,l1+1)))
 
 	def forwardProc(self,input):
 
@@ -73,9 +74,9 @@ class BackPropagationNetwork:
 			currWeightDelta = np.sum(layerOutput[None,:,:].transpose(2,0,1) * delta[delta_index][None,:,:].transpose(2,1,0),axis = 0)
 
 			weightDelta = trainingRate * currWeightDelta + momentum * self._previousWeightDelta[index]
-			
+
 			self.weights[index] -= weightDelta
-			
+
 			self._previousWeightDelta[index] = weightDelta
 
 		return error
@@ -89,25 +90,57 @@ class BackPropagationNetwork:
 
 
 if __name__ == "__main__":
-	bpn = BackPropagationNetwork((26,50,50,5))
-	print bpn.weights;
+	bpn = BackPropagationNetwork((260,16,5))
+	
 
-	# lvInput = np.array([[0,0],[1,1],[0,1],[1,0]])
-	# lvTarget = np.array([[0.05],[0.05],[0.95],[0.95]])
+	f1 = open("mfccData/A_mfcc.npy")
+	f2 = open("mfccData/E_mfcc.npy")
+	f3 = open("mfccData/I_mfcc.npy")
+	f4 = open("mfccData/O_mfcc.npy")
+	f5 = open("mfccData/U_mfcc.npy")
+	
+	inputArray1  = np.load(f1)
+	inputArray2  = np.load(f2)
+	inputArray3  = np.load(f3)
+	inputArray4  = np.load(f4)
+	inputArray5  = np.load(f5)
+	inputArray = np.concatenate((inputArray1,inputArray2,inputArray3,inputArray4,inputArray5))
 
-	# lnMax = 100000
-	# lnErr = 1e-5
+	print inputArray.shape
 
-	# for i in range(lnMax-1):
-	# 	err = bpn.train(lvInput,lvTarget,momentum = 0.7)
-	# 	if i % 2500 == 0:
-	# 		print "Iteration {0} \tError: {1:0.6f}".format(i,err)
-	# 	if err <= lnErr:
-	# 		print("Minimum error reached at iteration {0}".format(i))
-	# 		break
+	t1 = np.array([[1,0,0,0,0] for _ in range(len(inputArray1))])
+	t2 = np.array([[0,1,0,0,0] for _ in range(len(inputArray2))])
+	t3 = np.array([[0,0,1,0,0] for _ in range(len(inputArray3))])
+	t4 = np.array([[0,0,0,1,0] for _ in range(len(inputArray4))])
+	t5 = np.array([[0,0,0,0,1] for _ in range(len(inputArray5))])
 
+	target = np.concatenate([t1,t2,t3,t4,t5])
+	print target.shape	
 
-	# lvOutput = bpn.forwardProc(lvInput)
-	# print("Output {0}".format(lvOutput))
+	lnMax = 200000
+	lnErr = 1e-5
 
+	startTime = time.clock()
+
+	#Train Loop
+	for i in range(lnMax-1):
+		err = bpn.train(inputArray,target,momentum = 0.7)
+		if i % 1500 == 0:
+			print "Iteration {0} \tError: {1:0.6f}".format(i,err)
+		if err <= lnErr:
+			print("Minimum error reached at iteration {0}".format(i))
+			break
+
+	endTime = time.clock()
+
+	with open("network/" + "vowel_network"+ ".npy", 'w') as outfile:
+  		np.save(outfile,bpn.weights)
+
+  	
+
+	lvOutput = bpn.forwardProc(inputArray)
+	print("Output {0}".format(lvOutput))
+
+	print "Time Elapsed: " + str(endTime - startTime) + " seconds"
+	print "Total Iteration {0} \t Total Error: {1:0.6f}".format(i,err)
 	
