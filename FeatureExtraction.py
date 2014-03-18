@@ -1,4 +1,5 @@
 from features import mfcc
+from operator import add
 import scipy.io.wavfile as wav
 import numpy as np
 
@@ -17,8 +18,9 @@ for x in range(len(vowels)):
 		for elem in s:
 			st.extend(elem)
 		
-			
+		st /= np.max(np.abs(st),axis=0)
 		data.append(st)
+		print st;
 		
 	with open("mfccData/" + fileString+ ".npy", 'w') as outfile:
    		np.save(outfile,data)

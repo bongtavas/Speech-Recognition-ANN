@@ -1,4 +1,7 @@
+from __future__ import division 
 import numpy as np 
+import scipy.io.wavfile as wav
+
 from features import mfcc
 
 class TestingNetwork:
@@ -43,13 +46,43 @@ class TestingNetwork:
 
 if __name__ == "__main__":
 
-	f1 = open("network/vowel_network.npy")
-	f2 = open("mfccData/U_mfcc.npy")
+	f1 = open("network/vowel_network_2.npy")
 	
-	weights  = np.load(f1)
-	inputArray = np.load(f2)
+	#Get MFCC Feature Array
+	(rate,sig) = wav.read("test_files/test5.wav")
+	x = ((3*rate)/(len(sig)-256))
+	print x
+	mfcc_feat = mfcc(sig,rate)
+	
+	# print mfcc_feat
+	# print len(mfcc_feat)
+	# s = mfcc_feat[:20]
+	# st = []
+	# for elem in s:
+	# 	st.extend(elem)
+	# st /= np.max(np.abs(st),axis=0)
+	# inputArray = np.array([st])
 
-	testNet = TestingNetwork((260,16,5),weights)
+	# #Setup Neural Network
+	# weights  = np.load(f1)
+	# testNet = TestingNetwork((260,50,5),weights)
 
-	lvOutput = testNet.forwardProc(inputArray)
-	print("Output {0}".format(lvOutput))
+
+	# #Input MFCC Array to Network
+	# outputArray = testNet.forwardProc(inputArray)
+	# print outputArray;
+	# indexMax = outputArray.argmax(axis = 1)[0]
+
+	# if indexMax == 0:
+	# 	print "Detected: Vowel A";
+	# elif indexMax==1:
+	# 	print "Detected: Vowel E";
+	# elif indexMax==2:
+	# 	print "Detected: Vowel I";
+	# elif indexMax==3:
+	# 	print "Detected: Vowel O";
+	# elif indexMax==4:
+	# 	print "Detected: Vowel U";
+		
+
+

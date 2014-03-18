@@ -90,7 +90,7 @@ class BackPropagationNetwork:
 
 
 if __name__ == "__main__":
-	bpn = BackPropagationNetwork((260,16,5))
+	bpn = BackPropagationNetwork((260,50,5))
 	
 
 	f1 = open("mfccData/A_mfcc.npy")
@@ -117,14 +117,14 @@ if __name__ == "__main__":
 	target = np.concatenate([t1,t2,t3,t4,t5])
 	print target.shape	
 
-	lnMax = 200000
+	lnMax = 1000000
 	lnErr = 1e-5
 
 	startTime = time.clock()
 
 	#Train Loop
 	for i in range(lnMax-1):
-		err = bpn.train(inputArray,target,momentum = 0.7)
+		err = bpn.train(inputArray,target,momentum = 0.3)
 		if i % 1500 == 0:
 			print "Iteration {0} \tError: {1:0.6f}".format(i,err)
 		if err <= lnErr:
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
 	endTime = time.clock()
 
-	with open("network/" + "vowel_network"+ ".npy", 'w') as outfile:
+	with open("network/" + "vowel_network_2"+ ".npy", 'w') as outfile:
   		np.save(outfile,bpn.weights)
 
   	
