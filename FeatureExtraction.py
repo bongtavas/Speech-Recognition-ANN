@@ -8,7 +8,7 @@ vowels = ['A','E','I','O','U']
 for x in range(len(vowels)):
 	fileString = vowels[x]+"_mfcc"
 	data = []
-	for i in range(10):
+	for i in range(6):
 		(rate,sig) = wav.read("sound_files/"+ vowels[x] + "-" + str(i+1) + ".wav")
 		print "Reading: " + vowels[x] + "-" + str(i+1) + ".wav"
 		mfcc_feat = mfcc(sig,rate)
@@ -20,7 +20,7 @@ for x in range(len(vowels)):
 		
 		st /= np.max(np.abs(st),axis=0)
 		data.append(st)
-		print st;
+		print st
 		
 	with open("mfccData/" + fileString+ ".npy", 'w') as outfile:
    		np.save(outfile,data)

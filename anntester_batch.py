@@ -43,11 +43,25 @@ class TestingNetwork:
 
 if __name__ == "__main__":
 
-	f1 = open("network/vowel_network.npy")
-	f2 = open("mfccData/U_mfcc.npy")
+	f1 = open("network/vowel_network_2.npy")
+
 	
 	weights  = np.load(f1)
-	inputArray = np.load(f2)
+	
+	inputArray = []
+	for i in range(10)[6:10]:
+		(rate,sig) = wav.read("sound_files/"+ vowels[x] + "-" + str(i+1) + ".wav")
+		print "Reading: " + vowels[x] + "-" + str(i+1) + ".wav"
+		mfcc_feat = mfcc(sig,rate)
+
+		s = mfcc_feat[:20]
+		st = []
+		for elem in s:
+			st.extend(elem)
+		
+		st /= np.max(np.abs(st),axis=0)
+		inputArray.append(st)
+		
 
 	testNet = TestingNetwork((260,16,5),weights)
 
