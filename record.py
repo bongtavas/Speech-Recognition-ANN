@@ -8,7 +8,7 @@ import wave
 THRESHOLD = 500
 CHUNK_SIZE = 1024
 FORMAT = pyaudio.paInt16
-RATE = 16000
+RATE = 44100
 
 def is_silent(snd_data):
     "Returns 'True' if below the 'silent' threshold"
@@ -67,7 +67,7 @@ def record():
     """
     p = pyaudio.PyAudio()
     stream = p.open(format=FORMAT, channels=1, rate=RATE,
-        input=True, output=True,
+        input=True,
         frames_per_buffer=CHUNK_SIZE)
 
     num_silent = 0
