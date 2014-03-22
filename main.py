@@ -1,7 +1,8 @@
 from Tkinter import *
 from threading import Thread
 from record import record_to_file
-from features import mfcc, logfbank
+from features import mfcc
+from anntester_single import *
 import scipy.io.wavfile as wav
 
 class Application(Frame):
@@ -10,7 +11,7 @@ class Application(Frame):
         self.button_image = PhotoImage(file="button.gif")
         self.RECORD = Button(self, image=self.button_image, width="100", height="100", command=self.record_buttonpress)
         self.RECORD.pack()
-        self.TEXTBOX = Text(self, height="1", width="15")
+        self.TEXTBOX = Text(self, height="1", width="30")
         self.TEXTBOX.pack()
 
     def __init__(self, master=None):
@@ -26,7 +27,7 @@ class Application(Frame):
         recorder_thread = Thread(target=record_and_test, args=(self.TEXTBOX, self.RECORD))
         recorder_thread.start()
 
-def record_and_test(textbox, button, filename="test.wav"):
+def record_and_test(textbox, button, filename="test_files/test.wav"):
 
     # Disable button and change text
     button.configure(state="disabled")
@@ -38,16 +39,17 @@ def record_and_test(textbox, button, filename="test.wav"):
 
     # Record to file
     record_to_file(filename)
-    (rate,sig) = wav.read(filename)
 
-
-    # TODO Feed into ANN
+    # Feed into ANN
+    testNet = testInit()
+    inputArray = extractFeature(filename)
+    outStr = feedToNetwork(inputArray,testNet)
 
     # Change text and re-enable button
     textbox.configure(state="normal")
     textbox.delete("1.0", END)
     textbox.tag_remove("recording", "1.0")
-    textbox.insert(INSERT, "Completed")
+    textbox.insert(INSERT, outStr)
     textbox.tag_add("success", "1.0", END)
     textbox.configure(state="disabled")
     button.configure(state="normal")

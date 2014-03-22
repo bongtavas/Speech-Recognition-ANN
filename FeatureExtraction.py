@@ -8,7 +8,7 @@ vowels = ['A','E','I','O','U']
 for x in range(len(vowels)):
 	fileString = vowels[x]+"_mfcc"
 	data = []
-	for i in range(6):
+	for i in range(10):
 		(rate,sig) = wav.read("sound_files/"+ vowels[x] + "-" + str(i+1) + ".wav")
 		print "Reading: " + vowels[x] + "-" + str(i+1) + ".wav"
 		mfcc_feat = mfcc(sig,rate)

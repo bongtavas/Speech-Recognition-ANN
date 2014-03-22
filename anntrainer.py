@@ -90,7 +90,7 @@ class BackPropagationNetwork:
 
 
 if __name__ == "__main__":
-	bpn = BackPropagationNetwork((260,50,5))
+	bpn = BackPropagationNetwork((260,25,25,5))
 	
 
 	f1 = open("mfccData/A_mfcc.npy")
