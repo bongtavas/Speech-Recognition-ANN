@@ -47,7 +47,7 @@ class TestingNetwork:
 
 def testInit():
 	#Setup Neural Network
-	f1 = open("network/vowel_network_2.npy")
+	f1 = open("network/vowel_network_words.npy")
 	weights  = np.load(f1)
 	testNet = TestingNetwork((260,25,25,5),weights)
 	return testNet
@@ -57,6 +57,7 @@ def extractFeature(soundfile):
 	(rate,sig) = wav.read(soundfile)
 	duration = len(sig)/rate;	
 	mfcc_feat = mfcc(sig,rate,winlen=duration/20,winstep=duration/20)
+	print "MFCC Feature Length: " + str(len(mfcc_feat))
 	s = mfcc_feat[:20]
 	st = []
 	for elem in s:
@@ -73,11 +74,8 @@ def feedToNetwork(inputArray,testNet):
 	#the threshold the system does not recognize the sound
 	#the user spoke
 
-	if(np.max(outputArray)<0.6):
-		indexMax = 5;
-	
-	else:
-		indexMax = outputArray.argmax(axis = 1)[0]
+
+	indexMax = outputArray.argmax(axis = 1)[0]
 			
 	print outputArray
 	
@@ -85,17 +83,15 @@ def feedToNetwork(inputArray,testNet):
 	outStr = None
 	
 	if indexMax == 0:
-		outStr  = "Detected: Vowel A"; 
+		outStr  = "Detected: Apple"; 
 	elif indexMax==1:
-		outStr  = "Detected: Vowel E";
+		outStr  = "Detected: Banana";
 	elif indexMax==2:
-		outStr  = "Detected: Vowel I";
+		outStr  = "Detected: Kiwi";
 	elif indexMax==3:
-		outStr  = "Detected: Vowel O";
+		outStr  = "Detected: Lime";
 	elif indexMax==4:
-		outStr  = "Detected: Vowel U";
-	else:
-		outStr = "Can't Understand Yah"
+		outStr  = "Detected: Orange";
 
 	print outStr
 	return outStr

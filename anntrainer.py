@@ -93,11 +93,11 @@ if __name__ == "__main__":
 	bpn = BackPropagationNetwork((260,25,25,5))
 	
 
-	f1 = open("mfccData/A_mfcc.npy")
-	f2 = open("mfccData/E_mfcc.npy")
-	f3 = open("mfccData/I_mfcc.npy")
-	f4 = open("mfccData/O_mfcc.npy")
-	f5 = open("mfccData/U_mfcc.npy")
+	f1 = open("mfccData/apple_mfcc.npy")
+	f2 = open("mfccData/banana_mfcc.npy")
+	f3 = open("mfccData/kiwi_mfcc.npy")
+	f4 = open("mfccData/lime_mfcc.npy")
+	f5 = open("mfccData/orange_mfcc.npy")
 	
 	inputArray1  = np.load(f1)
 	inputArray2  = np.load(f2)
@@ -133,7 +133,7 @@ if __name__ == "__main__":
 
 	endTime = time.clock()
 
-	with open("network/" + "vowel_network_2"+ ".npy", 'w') as outfile:
+	with open("network/" + "vowel_network_words"+ ".npy", 'w') as outfile:
   		np.save(outfile,bpn.weights)
 
   	

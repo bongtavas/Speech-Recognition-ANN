@@ -43,6 +43,7 @@ def record_and_test(textbox, button, filename="test_files/test.wav"):
     # Feed into ANN
     testNet = testInit()
     inputArray = extractFeature(filename)
+    print len(inputArray)
     outStr = feedToNetwork(inputArray,testNet)
 
     # Change text and re-enable button
