@@ -47,7 +47,7 @@ class TestingNetwork:
 
 def testInit():
 	#Setup Neural Network
-	f1 = open("network/vowel_network_words.npy")
+	f1 = open("network/vowel_network_words.npy", "rb")
 	weights  = np.load(f1)
 	testNet = TestingNetwork((260,25,25,5),weights)
 	return testNet
