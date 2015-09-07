@@ -43,6 +43,6 @@ then run anntrainer.py. This could take a lot of time to compute. Grab a coffee 
 Just run main.py! =)
 You can view demo.mp4 for sample usage.
 
-
+#Developers
 A CS 180 Artificial Intelligence Project, University of the Philippines Diliman
 Developers: Romelio Tavas Jr., Dion Melosantos
